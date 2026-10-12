@@ -182,3 +182,38 @@ class Flame_Charge(Skill):
         else:
             self.ChargePower = True
             print(f"{user.name} used {self.name} and is charging up for a powerful attack!")
+
+
+class Lightning_Maneuver(Skill):
+    name = "Lightning Maneuver"
+
+    def __init__(self, amount: int = 2) -> None:
+        self.amount = amount
+
+    def execute(self, user, opponent):
+        user.evasion *= self.amount
+        print(f"{user.name} used {self.name} and increased its evasion by {self.amount} times!")
+
+
+class Counter_Attack(Skill):
+    name = "Counter Attack"
+
+    def __init__(self) -> None:
+        super().__init__()
+
+    def execute(self, user, opponent):
+        if opponent.check_evasion():
+            return
+
+        if user.bonusTurn:
+            self.damage = user.attack * 3
+            print(
+                f"Great chance! {user.name} used {self.name}, dealing {self.damage} damage to {opponent.name}"
+            )
+            opponent.receive_damage(self.damage, user)
+        else:
+            self.damage = user.attack *0.8
+            print(
+                f"{user.name} used {self.name}, dealing {self.damage} damage to {opponent.name}"
+            )
+            opponent.receive_damage(self.damage, user)

@@ -152,11 +152,62 @@
     items
     dict_items([(1, 10), (2, 10), (3, 10)])
 
+## 函数：Lambda 匿名函数、Decorator 装饰器
 
+### Lambda 匿名函数
+lambda arg1,arg2,arg3, …… argN:expression
 
+    def X(x):
+        return x*x
+    X(3)
+    9
+    Y=lambda x:x*x
+    Y(3)
+    9
 
+### Decorator 装饰器
+闭包：
+1. 利用嵌套函数的外层作用域具有记忆能力的特性，让数据保存在外层函数的参数或变量中
+2. 将内层函数作为返回值返回
 
+在此基础上将一个函数作为参数传递给另一函数即为装饰器。
 
+    def call_counter(function):
+    count = 0
 
-    
-    
+        def inner():
+            function()
+            nonlocal count
+            count += 1
+            return count
+
+    return inner
+
+    @call_counter
+    def my_function():
+        print("Function called")
+
+    for i in range(5):
+        print(my_function())
+
+## 面向对象：Class（类）与 Magic Methods（魔法方法），以及 OOP（面向对象编程）的思想
+### Class（类）
+类中的方法默认的第一个参数都是 self 即实例本身。
+
+构造函数： __init__ 自动初始化实例对象
+
+钻石继承
+![ ](images\2.png)
+![ ](images\1.png)
+![ ](images\3.png)
+
+私有变量：__x 用于不想被外界访问的变量，实现逻辑是在开头+_类名
+
+    __slots __:规定只能有固定的属性
+
+ ### Magic Methods（魔法方法）
+ 拦截
+ 
+    __init__
+    __new__
+    __del__

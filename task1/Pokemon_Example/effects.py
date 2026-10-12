@@ -19,8 +19,9 @@ class Effect:
 
     def decrease_duration(self) -> None:
         # 减少效果持续时间
-        self.duration -= 1
-        print(f"{self.name} effect duration decreased. Remaining: {self.duration}")
+        if self.duration > 0:
+            self.duration -= 1
+            print(f"{self.name} effect duration decreased. Remaining: {self.duration}")
 
 
 class PoisonEffect(Effect):

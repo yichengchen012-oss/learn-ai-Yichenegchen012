@@ -122,31 +122,31 @@ class Play:
             computer_skill, self.current_player_pokemon
         )
 
-    def battle_round_begin(self):
-        # 回合开始
-        if self.current_player_pokemon is None or self.current_computer_pokemon is None:
-            return
-        self.current_player_pokemon.begin()
-        self.current_computer_pokemon.begin()
-        self.check_game_status()
-
     def battle_round(self):
-        if self.current_player_pokemon is None or self.current_computer_pokemon is None:
-            return
-        # 回合进行
-        print(
-            f"\n{self.current_player_pokemon.name} vs {self.current_computer_pokemon.name}"
-        )
+        # 总回合
+        self.turn += 1
+        print(f"it's {self.turn} turn.\n{self.current_player_pokemon.name} vs {self.current_computer_pokemon.name}")
+
+    def battle_round_player(self):
+        # 玩家回合
+        self.current_player_pokemon.begin()
+        self.check_game_status()
         if self.current_player_pokemon.moveable:
             self.player_use_skills()
-        if self.current_player_pokemon.extraTurn:
-            self.current_player_pokemon.extraTurn = False
-            self.player_use_skills()
+        if self.current_computer_pokemon.bonusTurn:
+            self.computer_use_skills()
+            self.current_computer_pokemon.bonusTurn = False
+        self.check_game_status()
+
+    def battle_round_computer(self):
+        # 电脑回合
+        self.current_computer_pokemon.begin()
+        self.check_game_status()
         if self.current_computer_pokemon.moveable:
             self.computer_use_skills()
-        if self.current_computer_pokemon.extraTurn:
-            self.current_computer_pokemon.extraTurn = False
-            self.computer_use_skills()
+        if self.current_player_pokemon.bonusTurn:
+            self.player_use_skills()
+            self.current_player_pokemon.bonusTurn = False
         self.check_game_status()
 
     def run(self):
@@ -159,12 +159,13 @@ class Play:
         self.current_computer_pokemon = self.computer_choose_pokemon()
 
         while True:
-            self.battle_round_begin()
             self.battle_round()
+            self.battle_round_player()
+            self.battle_round_computer()
 
 
 if __name__ == "__main__":
-    pokemon1,pokemon2,pokemon3,pokemon4 = pokemon.PikaChu(),pokemon.Bulbasaur(),pokemon.Squirtle(),pokemon.Charmander()
-    all_pokemon = [pokemon1, pokemon2, pokemon3, pokemon4]
+    pokemon1,pokemon2,pokemon3,pokemon4,pokemon5 = pokemon.PikaChu(),pokemon.Bulbasaur(),pokemon.Squirtle(),pokemon.Charmander(),pokemon.Zapdos()
+    all_pokemon = [pokemon1, pokemon2, pokemon3, pokemon4, pokemon5]
     play = Play(all_pokemon)
     play.run()

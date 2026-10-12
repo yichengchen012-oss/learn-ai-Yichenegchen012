@@ -21,7 +21,7 @@ class Pokemon:
         self.damage_dealt_multiplier = 1.0
         self.moveable = True
         self.alive = True
-        self.extraTurn = False
+        self.bonusTurn = False
         self.statuses = []
 
     def initialize_skills(self):
@@ -60,6 +60,8 @@ class Pokemon:
         damage *= attacker.damage_dealt_multiplier
         damage *= self.damage_taken_multiplier
         damage -= self.defense
+        if not isinstance(damage, int):
+            damage = int(damage)
         if damage <= 0:
             print(f"{self.name}'s defense absorbed the attack!")
             return
@@ -178,11 +180,11 @@ class ElectricPokemon(Pokemon):
             effectiveness = 0.5
         return effectiveness
 
-    def check_evasion(self):
+    def check_evasion(self, evasionRateModifier = 0):
         # 电系被动
-        if self.evasion >= random.randint(1,100):
+        if self.evasion + evasionRateModifier >= random.randint(1,100):
             print(f"{self.name} evaded the attack!")
-            self.extraTurn = True
+            self.bonusTurn = True
             return True
         else:
             return False
@@ -198,6 +200,18 @@ class PikaChu(ElectricPokemon):
     def initialize_skills(self):
         # 初始化技能
         return [skills.Thunderbolt(), skills.QuickAttack(activation_chance=10)]
+
+
+class Zapdos(ElectricPokemon):
+    name = "Zapdos"
+
+    def __init__(self, hp=80, attack=25, defense=0, evasion=40) -> None:
+        # 初始化属性
+        super().__init__(hp, attack, defense, evasion)
+
+    def initialize_skills(self):
+        # 初始化技能
+        return [skills.Lightning_Maneuver(), skills.Counter_Attack()]
 
 
 class WaterPokemon(Pokemon):
