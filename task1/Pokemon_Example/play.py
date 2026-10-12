@@ -20,11 +20,11 @@ class Play:
         self.current_computer_pokemon = None
         self.turn = 0
 
-    def player_choose_pokemon_team(self, pokemon_to_choose: list, num=1):
+    def player_choose_pokemon_team(self, pokemon_to_choose: list, num=3):
         # 玩家选择队伍中的Pokemon
         print(f"Choose {num} pokemon for your team:")
-        pokemon_to_choose = copy.copy(pokemon_to_choose)
-        index = 0
+        pokemon_to_choose = copy.deepcopy(pokemon_to_choose)
+        index = 1
         while len(self.player_team) < num:
             self.print_pokemon_list(pokemon_to_choose)
             choice = input(f"Select your pokemon {index} by number: ")
@@ -36,7 +36,7 @@ class Play:
         print("Here is your pokemon team:")
         self.print_pokemon_list(self.player_team)
 
-    def computer_choose_pokemon_team(self, pokemon_to_choose: list, num=1):
+    def computer_choose_pokemon_team(self, pokemon_to_choose: list, num=3):
         # 电脑选择对战的队伍
         print(f"Your opponent is choosing {num} pokemon")
         self.computer_team.extend(random.sample(pokemon_to_choose, num))
@@ -137,8 +137,16 @@ class Play:
         print(
             f"\n{self.current_player_pokemon.name} vs {self.current_computer_pokemon.name}"
         )
-        self.player_use_skills()
-        self.computer_use_skills()
+        if self.current_player_pokemon.moveable:
+            self.player_use_skills()
+        if self.current_player_pokemon.extraTurn:
+            self.current_player_pokemon.extraTurn = False
+            self.player_use_skills()
+        if self.current_computer_pokemon.moveable:
+            self.computer_use_skills()
+        if self.current_computer_pokemon.extraTurn:
+            self.current_computer_pokemon.extraTurn = False
+            self.computer_use_skills()
         self.check_game_status()
 
     def run(self):
@@ -156,7 +164,7 @@ class Play:
 
 
 if __name__ == "__main__":
-    pokemon1 = pokemon.Bulbasaur()
-    all_pokemon = [pokemon1]
+    pokemon1,pokemon2,pokemon3,pokemon4 = pokemon.PikaChu(),pokemon.Bulbasaur(),pokemon.Squirtle(),pokemon.Charmander()
+    all_pokemon = [pokemon1, pokemon2, pokemon3, pokemon4]
     play = Play(all_pokemon)
     play.run()
