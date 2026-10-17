@@ -87,7 +87,7 @@ class Pokemon:
             self.alive = False
             print(f"{self.name} has fainted!")
 
-    def add_status_effect(self, effect: Effect):
+    def add_status_effect(self, effect: effects.Effect):
         # 添加状态效果
         if not any(type(effect) == type(existing_effect) for existing_effect in self.statuses):
             self.statuses.append(effect)

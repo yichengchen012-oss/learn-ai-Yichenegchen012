@@ -147,7 +147,7 @@ def main_battle_loop(
     turn = 1
 
     while nagato_hp > 0 and nabiya_hp > 0 and turn <= max_turns:
-        print(f"回合:{turn}")
+        print(f"第 {turn} 回合")
         display_status("长门", nagato_hp, NAGATO_MAX_HP)
         display_status("娜比娅", nabiya_hp, NABIYA_MAX_HP)
         action=choose_nagato_action(nagato_hp, nabiya_hp)
